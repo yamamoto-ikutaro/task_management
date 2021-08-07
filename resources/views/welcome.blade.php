@@ -1,100 +1,145 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('content')
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+@if(!Auth::check())
+    <div class="jumbotron">
+        <h2 class="mb-4">このサイトでできること</h1>
+        <ul>
+            <li>メンバーごとの予定・業務の一覧確認</li>
+            <li>メンバーごとの予定・業務の詳細確認</li>
+            <li>予定の登録・編集</li>
+            <li>資料のアップロード・ダウンロード</li>
+            <li>業務の登録・編集</li>
+            <li>ToDoリストの追加・編集/リマインドメールの送付</li>
+        </ul>
+        <div class="text-center">
+            {!! link_to_route('signup.get', '会員登録', [], ['class'=>'btn btn-primary']) !!}
         </div>
-    </body>
-</html>
+    </div>
+@else
+    <h1 class="text-center mb-4">{{ $user->name }}さんのスケジュール</h1>
+    <h3 class="text-center mb-4">今日の日付：{{ date('Y/m/d') }}</h3>
+    <div class="row">
+        <div class="col-sm-8">
+            {!! Form::open(['route'=>'topPage','method'=>'get']) !!}
+                <div>▼日付で検索</div>
+                <div class="form-group input-group">
+                    {!! Form::date('calender', null) !!}
+                    {!! Form::button('<i class="fas fa-search"></i>', ['class' => "btn input-group-text", 'type' => 'submit']) !!}
+                </div>
+                @if($errors->first('calender'))
+                    <p class="text-danger">{{ $errors->first('calender') }}</p>
+                @endif
+            {!! Form::close() !!}
+            
+            {!! link_to_route('scheduleRegister.get', '予定登録', [], ['class'=>'btn btn-primary']) !!}
+            {!! link_to_route('taskRegister.get', '業務登録', [], ['class'=>'btn btn-success']) !!}
+            
+            <div class="text-right">
+                {!! link_to_route('topPage', '< 前週', ['calender'=>$calender, 'w'=>$w - 1]) !!}
+                {!! link_to_route('topPage', '次週 >', ['calender'=>$calender, 'w'=>$w + 1]) !!}
+            </div>
+            
+            
+            <table class="table table-bordered mb-0">
+                    <tr class="text-center">
+                    @foreach($dates as $date)
+                        @if(date('w', strtotime($date)) == 0)
+                            <th>{{ $date }}<font color='red'>{{ $week[date('w', strtotime($date))] }}</font></th>
+                        @elseif(date('w', strtotime($date)) == 6)
+                            <th>{{ $date }}<font color='blue'>{{ $week[date('w', strtotime($date))] }}</font></th>
+                        @else
+                            <th>{{ $date }}{{ $week[date('w', strtotime($date))] }}</th>
+                        @endif
+                    @endforeach
+                    </tr>
+                    <tr>
+                        <th class="bg-primary p-0 text-white" colspan="7">予定</th>
+                    </tr>
+                    <tr>
+                    @foreach($dates as $date)
+                    　　<td class="p-0">
+                            @foreach($schedules as $schedule)
+                                @if($schedule->users->where('id', Auth::id())->first())
+                                @if(date("m/d", strtotime($schedule->date)) == $date)
+                                    <ul class="mb-0 list-unstyled">
+                                        <li>{!! link_to_route('showSchedule', $schedule->title, [$schedule->id]) !!}</li>
+                                    </ul>
+                                @endif
+                                @endif
+                            @endforeach
+                    　　</td>
+                    @endforeach
+                    </tr>
+                    <tr>
+                        <th class="bg-success p-0 text-white" colspan="7">業務</th>
+                    </tr>
+                    <tr>
+                    @foreach($dates as $date)
+                    　　<td class="p-0">
+                            @foreach($tasks as $task)
+                                @if($task->users->where('id', Auth::id())->first())
+                                @if(date("m/d", strtotime($task->start_date)) <= $date && date("m/d", strtotime($task->deadline)) >= $date && date('w', strtotime($date)) !== "0" && date('w', strtotime($date)) !== "6")
+                                    <ul class="mb-0 list-unstyled">
+                                        <li>{!! link_to_route('showTask', $task->title, [$task->id]) !!}</li>
+                                    </ul>
+                                @endif
+                                @endif
+                            @endforeach
+                    　　</td>
+                    @endforeach
+                    </tr>
+                    <tr>
+                        @if(!$user->message)
+                            <th colspan="7">
+                                {!! Form::open(['route' => ['userMessagePut', $user->id], 'method' => 'put']) !!}
+                                    {!! Form::label('message', '伝達事項：') !!}
+                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                                    {!! Form::submit('追加', ['class'=>'btn btn-primary d-block mt-2', 'maxlength' => '3']) !!}
+                                {!! Form::close() !!}
+                            </th>
+                        @elseif($user->message && $query !== "update")
+                            <th colspan="7">
+                                <p class="mb-0">伝達事項：</p>
+                                {!! nl2br(e($user->message)) !!}
+                                <!--更新フォーム表示ボタン-->
+                                <div class="mt-2">
+                                    {!! link_to_route('topPage', '更新しますか？', ['message' => 'update'], ['class' => 'btn btn-primary']) !!}
+                                </div>
+                                <!--▼削除ボタン-->
+                                {!! Form::open(['route' => ['userMessageDelete', $user->id], 'method' => 'delete']) !!}
+                                    {!! Form::submit('削除', ['class'=>'btn btn-danger d-block mt-2']) !!}
+                                {!! Form::close() !!}
+                            </th>
+                        @elseif($user->message && $query === "update")
+                            <th colspan="7">
+                                {!! Form::model($user, ['route' => ['userMessagePut', $user->id], 'method' => 'put']) !!}
+                                    {!! Form::label('message', '伝達事項：') !!}
+                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                                    {!! Form::submit('更新', ['class'=>'btn btn-success d-block mt-2', 'maxlength' => '3']) !!}
+                                {!! Form::close() !!}
+                            </th>
+                        @endif
+                    </tr>
+            </table>
+                
+            {!! link_to_route('userInfo.get', 'ユーザー情報を更新する', [$user->id], ['class'=>'btn btn-primary mt-4']) !!}
+        </div>
+        <div class="col-sm-4">
+            <h3 class="pt-4 pl-4 mb-4">ToDoリスト</h3>
+            {!! Form::open(['route' => ['todo', $user->id]]) !!}
+                <div class="form-group input-group pl-4">
+                    {!! Form::text('content', null, ['class'=>'form-control']) !!}
+                    {!! Form::button('追加', ['class'=>'btn btn-info', 'type'=>'submit']) !!}
+                </div>
+            {!! Form::close() !!}
+            <ul>
+                @foreach($user->todo as $todo)
+                    <li>{!! link_to_route('todo_reminder', $todo->content, [$todo->id]) !!}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+@endif
+@endsection
