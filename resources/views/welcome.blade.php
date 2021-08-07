@@ -98,6 +98,9 @@
                                     {!! Form::textarea('message', null, ['class' => 'form-control', 'rows' => 3]) !!}
                                     {!! Form::submit('追加', ['class'=>'btn btn-primary d-block mt-2', 'maxlength' => '3']) !!}
                                 {!! Form::close() !!}
+                                @if($errors->first('message'))
+                                    <p class="text-danger">伝達事項を入力してください。</p>
+                                @endif
                             </th>
                         @elseif($user->message && $query !== "update")
                             <th colspan="7">
@@ -119,6 +122,9 @@
                                     {!! Form::textarea('message', null, ['class' => 'form-control', 'rows' => 3]) !!}
                                     {!! Form::submit('更新', ['class'=>'btn btn-success d-block mt-2', 'maxlength' => '3']) !!}
                                 {!! Form::close() !!}
+                                @if($errors->first('message'))
+                                    <p class="text-danger">伝達事項を入力してください。</p>
+                                @endif
                             </th>
                         @endif
                     </tr>
