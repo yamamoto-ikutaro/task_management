@@ -31,12 +31,14 @@
                     <p>担当者：</p>
                 </div>
                 <div>
+                    <div class="checkbox">
                     @foreach($users as $user)
-                    <div>
-                        {{ Form::checkbox('memberIds[]', $user->id, false, ['class' => 'mr-1', 'id' => $user->id]) }}
-                        <label for = {{ $user->id }}>{{ $user->name }}</label>
-                    </div>
+                        <div>
+                            {{ Form::checkbox('memberIds[]', $user->id, false, ['class' => 'mr-1', 'id' => $user->id]) }}
+                            <label for = {{ $user->id }}>{{ $user->name }}</label>
+                        </div>
                     @endforeach
+                    </div>
                 </div>
             </div>
             <div>

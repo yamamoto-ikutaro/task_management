@@ -1,0 +1,15 @@
+.checkbox{
+    width: 180px;
+    height: 200px;
+    border: 1px solid black;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.checkbox .edit{
+    width: 180px;
+    height: 200px;
+    border: 1px solid black;
+    overflow-y: scroll;
+    padding: 10px;
+}

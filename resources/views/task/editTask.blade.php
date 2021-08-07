@@ -2,6 +2,7 @@
 
 @section('content')
 @if(Auth::check())
+    <h1 class="text-center">業務編集</h1>
     {!! Form::model($task, ['route' => ['task.update', $task->id], 'method' => 'put']) !!}
         <div class="form-group">
             {!! Form::label('title', 'タイトル：') !!}
@@ -27,15 +28,17 @@
         <div class="form-group">
             <div class="d-flex">
                 <div>
-                 <p>担当者：</p>
+                    <p>担当者：</p>
                 </div>
                 <div>
+                    <div class="checkbox">
                     @foreach($users as $user)
-                    <div>
-                        {{ Form::checkbox('memberIds[]', $user->id, $task_members->where('id', $user->id)->first() ? 'checked' : '', ['class' => 'mr-1', 'id' => $user->id]) }}
-                        <label for = {{ $user->id }}>{{ $user->name }}</label>
-                    </div>
+                        <div>
+                            {{ Form::checkbox('memberIds[]', $user->id, $task_members->where('id', $user->id)->first() ? 'checked' : '', ['class' => 'mr-1', 'id' => $user->id]) }}
+                            <label for = {{ $user->id }}>{{ $user->name }}</label>
+                        </div>
                     @endforeach
+                    </div>
                 </div>
             </div>
             <div>

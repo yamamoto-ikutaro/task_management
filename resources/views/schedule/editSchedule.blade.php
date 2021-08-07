@@ -2,6 +2,7 @@
 
 @section('content')
 @if(Auth::check())
+    <h1 class="text-center">予定編集</h1>
     {!! Form::model($schedule, ['route' => ['schedule.update', $schedule->id], 'files' => true, 'method' => 'put']) !!}
         <div class="form-group">
             {!! Form::label('title', 'タイトル：') !!}
@@ -23,12 +24,14 @@
                     <p>参加者：</p>
                 </div>
                 <div>
+                    <div class="checkbox">
                     @foreach($users as $user)
-                    <div>
-                        {{ Form::checkbox('memberIds[]', $user->id, $members->where('id', $user->id)->first() ? 'checked' : '', ['id' => $user->id]) }}
-                        <label for = {{ $user->id }}>{{ $user->name }}</label>
-                    </div>
+                        <div>
+                            {{ Form::checkbox('memberIds[]', $user->id, $members->where('id', $user->id)->first() ? 'checked' : '', ['id' => $user->id]) }}
+                            <label for = {{ $user->id }}>{{ $user->name }}</label>
+                        </div>
                     @endforeach
+                    </div>
                 </div>
             </div>
             <div>
