@@ -5,14 +5,14 @@
     <h1 class="text-center">予定編集</h1>
     {!! Form::model($schedule, ['route' => ['schedule.update', $schedule->id], 'files' => true, 'method' => 'put']) !!}
         <div class="form-group">
-            {!! Form::label('title', 'タイトル：') !!}
+            {!! Form::label('title', 'タイトル：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::text('title', null, ['class'=>'col-sm-8']) !!}
             @if($errors->first('title'))
                 <p class="text-danger">{{ $errors->first('title') }}</p>
             @endif
         </div>
         <div class="form-group">
-            {!! Form::label('date', '日付：') !!}
+            {!! Form::label('date', '日付：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::date('date', null) !!}
             @if($errors->first('date'))
                 <p class="text-danger">{{ $errors->first('date') }}</p>
@@ -20,11 +20,11 @@
         </div>
         <div class="form-group">
             <div class="d-flex">
-                <div>
+                <div class="text-right" style="width:100px;">
                     <p>参加者：</p>
                 </div>
                 <div>
-                    <div class="checkbox">
+                    <div class="overflow-auto border" style="width:180px; height:200px; padding:10px; margin-left:4px;">
                     @foreach($users as $user)
                         <div>
                             {{ Form::checkbox('memberIds[]', $user->id, $members->where('id', $user->id)->first() ? 'checked' : '', ['id' => $user->id]) }}
@@ -41,26 +41,26 @@
             </div>
         </div>
         <div class="form-group">
-            {!! Form::label('startTime', '開始時刻：') !!}
+            {!! Form::label('startTime', '開始時刻：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::time('startTime', null) !!}
             @if($errors->first('startTime'))
                 <p class="text-danger">{{ $errors->first('startTime') }}</p>
             @endif
         </div>
         <div class="form-group">
-            {!! Form::label('endTime', '終了時刻：') !!}
+            {!! Form::label('endTime', '終了時刻：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::time('endTime', null) !!}
             @if($errors->first('endTime'))
                 <p class="text-danger">{{ $errors->first('endTime') }}</p>
             @endif
         </div>
         <div class="form-group">
-            {!! Form::label('file', '資料：') !!}
+            {!! Form::label('file', '資料：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::file('file') !!}
         </div>
-        <div class="form-group">
-            {!! Form::label('comment', 'コメント') !!}
-            {!! Form::textarea('comment', null, ['class'=>'form-control']) !!}
+        <div class="form-group row">
+            {!! Form::label('comment', 'コメント：', ['class'=>'text-right', 'style'=>'width:115px; margin-right:3px;']) !!}
+            {!! Form::textarea('comment', null, ['class'=>'col-sm-8']) !!}
         </div>
         {!! Form::submit('更新', ['class'=>'btn btn-primary']) !!}
     {!! Form::close() !!}

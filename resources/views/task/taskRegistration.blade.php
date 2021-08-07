@@ -5,21 +5,21 @@
     <h1 class="text-center">業務登録</h1>
     {!! Form::open(['route'=>['taskRegister', $uri]]) !!}
         <div class="form-group">
-            {!! Form::label('title', 'タイトル：') !!}
+            {!! Form::label('title', 'タイトル：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::text('title', null, ['class'=>'col-sm-8']) !!}
             @if($errors->first('title'))
                 <p class="text-danger">{{ $errors->first('title') }}</p>
             @endif
         </div>
         <div class="form-group">
-            {!! Form::label('start_date', '着手日：') !!}
+            {!! Form::label('start_date', '着手日：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::date('start_date', null) !!}
             @if($errors->first('start_date'))
                 <p class="text-danger">{{ $errors->first('start_date') }}</p>
             @endif
         </div>
         <div class="form-group">
-            {!! Form::label('deadline', '納期：') !!}
+            {!! Form::label('deadline', '納期：', ['class'=>'text-right', 'style'=>'width:100px;']) !!}
             {!! Form::date('deadline', null) !!}
             @if($errors->first('deadline'))
                 <p class="text-danger">{{ $errors->first('deadline') }}</p>
@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             <div class="d-flex">
-                <div>
+                <div class="text-right" style="width:100px;">
                     <p>担当者：</p>
                 </div>
                 <div>
@@ -47,9 +47,9 @@
                 @endif
             </div>
         </div>
-        <div class="form-group">
-            {!! Form::label('comment', 'コメント：') !!}
-            {!! Form::textarea('comment', null, ['class'=>'form-control']) !!}
+        <div class="form-group row">
+            {!! Form::label('comment', 'コメント：', ['class'=>'text-right', 'style'=>'width:115px; margin-right:3px;']) !!}
+            {!! Form::textarea('comment', null, ['class'=>'col-sm-8']) !!}
         </div>
         {!! Form::submit('登録', ['class'=>'btn btn-primary']) !!}
     {!! Form::close() !!}
