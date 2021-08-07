@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             <div class="d-flex">
-                <div class="text-right" style="width:100px;">
+                <div class = "text-right" style = "width:100px;">
                     <p>担当者：</p>
                 </div>
                 <div>
