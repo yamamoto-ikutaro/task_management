@@ -24,7 +24,7 @@
                     <p>参加者：</p>
                 </div>
                 <div>
-                    <div class="checkbox">
+                    <div class="overflow-auto border" style="width:180px; height:200px; padding:10px; margin-left:4px;">
                     @foreach($users as $user)
                         <div>
                             {{ Form::checkbox('memberIds[]', $user->id, false, ['class' => 'mr-1','id' => $user->id]) }}
