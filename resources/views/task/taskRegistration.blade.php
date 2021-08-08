@@ -51,7 +51,7 @@
             {!! Form::label('comment', 'コメント：', ['class'=>'text-right', 'style'=>'width:115px; margin-right:3px;']) !!}
             {!! Form::textarea('comment', null, ['class'=>'col-sm-8']) !!}
         </div>
-        {!! Form::submit('登録', ['class'=>'btn btn-primary']) !!}
+        {!! Form::submit('登録', ['class'=>'btn btn-primary register-button']) !!}
     {!! Form::close() !!}
 @endif
 @endsection
