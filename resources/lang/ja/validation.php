@@ -162,6 +162,7 @@ return [
         'send_at'=>'リマインド日',
         'keyword'=>'キーワード',
         'check'=>'メンバー',
+        'content'=>'項目名',
     ],
 
 ];

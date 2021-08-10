@@ -11,6 +11,9 @@ use Carbon\Carbon;
 class TodoController extends Controller
 {
     public function todo(Request $request){
+        $request->validate([
+            'content' => 'required|max:50',
+        ]);
         // dd($request);
         if(\Auth::check()){
             $todos = \Auth::User()->todo()->create([
@@ -46,6 +49,10 @@ class TodoController extends Controller
     }
     
     public function todo_update(Request $request, $id){
+        $request->validate([
+            'content' => 'required|max:50',
+        ]);
+        
         Todo::find($id)->update([
             'content' => $request->content,
         ]);

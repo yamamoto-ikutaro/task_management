@@ -9,6 +9,9 @@
             {!! Form::label('content', 'Todo：') !!}
             {!! Form::text('content', null, ['class' => 'form-control']) !!}
         </div>
+        @if($errors->first('content'))
+            <p class="text-danger">{{ $errors->first('content') }}</p>
+        @endif
         {!! Form::submit('更新', ['class'=>'btn btn-primary mb-2']) !!}
     {!! Form::close() !!}
     

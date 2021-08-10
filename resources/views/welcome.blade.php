@@ -139,6 +139,9 @@
                     {!! Form::text('content', null, ['class'=>'form-control']) !!}
                     {!! Form::button('追加', ['class'=>'btn btn-info', 'type'=>'submit']) !!}
                 </div>
+                @if($errors->first('content'))
+                    <p class="text-danger pl-4">{{ $errors->first('content') }}</p>
+                @endif
             {!! Form::close() !!}
             <ul>
                 @foreach($user->todo as $todo)
