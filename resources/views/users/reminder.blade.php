@@ -19,7 +19,7 @@
         {!! Form::button('削除', ['class'=>'btn btn-danger mb-4', 'type'=>'submit']) !!}
     {!! Form::close() !!}
     
-    <h3 class="mb-0">▼リマインダー作成（メールでリマインドします）</h3>
+    <h3 class="mb-4">▼リマインダー作成（メールでリマインドします）</h3>
     {!! Form::open(['route'=>['todo_reminder_create', $todo->id], 'files' => true]) !!}
         <div class="form-group">
             {!! Form::label('send_at', 'リマインド日：') !!}
